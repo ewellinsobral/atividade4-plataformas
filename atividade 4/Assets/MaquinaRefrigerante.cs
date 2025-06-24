@@ -19,18 +19,13 @@ public class MaquinaRefrigerante : MonoBehaviour
 
     public TextMeshProUGUI avisoTexto;
 
-    private int estoque = 0;
-    private bool emManutencao = false;
-    private bool temMoeda = false;
+    public int estoque = 2;
+    public bool emManutencao = false;
+    public bool temMoeda = false;
 
     void Start()
     {
-        if (compartimentoAnimator == null)
-        {
-            Debug.LogWarning("Animator do compartimento não atribuído!");
-        }
-
-        AtualizarInterface();
+       // AtualizarInterface();
 
         
         btnInserir.onClick.AddListener(() =>
@@ -38,9 +33,9 @@ public class MaquinaRefrigerante : MonoBehaviour
             if (emManutencao)
             {
                 estoque++;
-                CriarLatinhaVisual();
+               // CriarLatinhaVisual();
                 animator.SetTrigger("abasteceu");
-                VerificarEstoque();
+             //   VerificarEstoque();
             }
             else if (!temMoeda && estoque > 0)
             {
@@ -48,7 +43,7 @@ public class MaquinaRefrigerante : MonoBehaviour
                 animator.SetTrigger("inseriuMoeda");
             }
 
-            AtualizarInterface();
+          //  AtualizarInterface();
         });
 
         btnCancelar.onClick.AddListener(() =>
@@ -70,10 +65,10 @@ public class MaquinaRefrigerante : MonoBehaviour
                 animator.SetTrigger("despejar");
 
                 
-                AbrirCompartimento();
+             //   AbrirCompartimento();
 
-                Invoke(nameof(SoltarLatinha), 1.5f);
-                VerificarEstoque();
+             //   Invoke(nameof(SoltarLatinha), 1.5f);
+             //   VerificarEstoque();
             }
         });
 
@@ -81,65 +76,8 @@ public class MaquinaRefrigerante : MonoBehaviour
         {
             emManutencao = !emManutencao;
             animator.SetBool("manutencaoAtivada", emManutencao);
-            AtualizarInterface();
+            //AtualizarInterface();
         });
     }
 
-    public void AbrirCompartimento()
-    {
-        compartimentoAnimator.SetTrigger("Abrir");
-    }
-
-    public void FecharCompartimento()
-    {
-        compartimentoAnimator.SetTrigger("Fechar");
-    }
-
-    void AtualizarInterface()
-    {
-            if (AvisoTexto != null){
-        if (emManutencao)
-        {
-            avisoTexto.text = "MANUTENÇÃO";
-        }
-        else if (estoque == 0)
-        {
-            avisoTexto.text = "VAZIO";
-        }
-        else if (temMoeda)
-        {
-            avisoTexto.text = "OK";
-        }
-        else
-        {
-            avisoTexto.text = "";
-        }
-            }
-            else
-    {
-     Debug.LogWarning("AvisoTexto está nulo!");
-    }
-
-        compartimentoRefrigerantes.SetActive(emManutencao);
-    }
-
-    void VerificarEstoque()
-    {
-        animator.SetBool("estoquezerado", estoque == 0);
-    }
-
-    void CriarLatinhaVisual()
-    {
-        Instantiate(lataPrefab, compartimentoRefrigerantes.transform);
-    }
-
-    void SoltarLatinha()
-    {
-        Instantiate(lataPrefab, saidaRefrigerante.position, Quaternion.identity);
-        AtualizarInterface();
-
-       
-        FecharCompartimento();
-    }
 }
-
