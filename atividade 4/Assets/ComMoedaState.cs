@@ -4,11 +4,26 @@ using UnityEngine;
 
 public class ComMoedaState : StateMachineBehaviour
 {
-    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    private MaquinaRefrigerante maquina;
+
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        maquina = animator.GetComponent<MaquinaRefrigerante>();
+        
+        if (maquina != null && maquina.temMoeda)
+        {
+            maquina.avisoTexto.text = "OK";
+        }
+    }
+
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        if (maquina != null)
+        {
+            maquina.avisoTexto.text = "";
+        }
+    }
+}
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -33,4 +48,4 @@ public class ComMoedaState : StateMachineBehaviour
     //{
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
-}
+

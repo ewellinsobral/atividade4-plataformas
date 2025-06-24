@@ -13,6 +13,8 @@ public class ManutencaoState : StateMachineBehaviour
         {
             maquina.avisoTexto.text = "MANUTENÇÃO";
         }
+        maquina.compartimentoRefrigerantes.SetActive(maquina.emManutencao);
+
 
     }
 

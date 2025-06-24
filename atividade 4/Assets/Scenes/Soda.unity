@@ -1099,6 +1099,9 @@ MonoBehaviour:
   lataPrefab: {fileID: 1435102360}
   saidaRefrigerante: {fileID: 1285009195}
   avisoTexto: {fileID: 1932457363}
+  estoque: 0
+  emManutencao: 0
+  temMoeda: 0
 --- !u!1 &1186986248
 GameObject:
   m_ObjectHideFlags: 0

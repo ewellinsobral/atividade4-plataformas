@@ -79,5 +79,15 @@ public class MaquinaRefrigerante : MonoBehaviour
             //AtualizarInterface();
         });
     }
+        public void AbrirCompartimento()
+    {
+        compartimentoAnimator.SetTrigger("Abrir");
+    }
+
+    public void FecharCompartimento()
+    {
+        compartimentoAnimator.SetTrigger("Fechar");
+    }
+    
 
 }
