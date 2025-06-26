@@ -13,12 +13,11 @@ public class VendendoState : StateMachineBehaviour
         if (maquina != null)
         {
             maquina.avisoTexto.text = "ENTREGANDO...";
-            maquina.AbrirCompartimento();
+            maquina.AbrirCompartimento(); 
 
-           
-            maquina.Invoke(nameof(maquina.FecharCompartimento), 2f);
+            maquina.Invoke(nameof(maquina.FecharCompartimento), 2f); 
 
-            
+            // Desabilita os botões durante a entrega
             maquina.btnInserir.interactable = false;
             maquina.btnCancelar.interactable = false;
             maquina.btnComprar.interactable = false;
@@ -31,12 +30,10 @@ public class VendendoState : StateMachineBehaviour
         {
             maquina.avisoTexto.text = "";
 
-            
+           
             maquina.btnInserir.interactable = true;
             maquina.btnCancelar.interactable = true;
             maquina.btnComprar.interactable = true;
         }
     }
 }
-
-   

@@ -509,6 +509,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: rerigerantes
     m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: estoquezerado
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4152102471624843394}
   m_Solo: 0
@@ -582,6 +585,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: manutencaoAtivada
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: estoquezerado
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4464038848871368574}
@@ -799,6 +805,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 2
     m_ConditionEvent: manutencaoAtivada
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: estoquezerado
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4152102471624843394}

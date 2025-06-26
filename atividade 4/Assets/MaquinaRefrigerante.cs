@@ -1,93 +1,126 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-
 
 public class MaquinaRefrigerante : MonoBehaviour
 {
-    [SerializeField] private Animator compartimentoAnimator; 
-    public Animator animator;
-
+    [Header("UI")]
     public Button btnInserir;
     public Button btnCancelar;
     public Button btnComprar;
+    public Text avisoTexto;
     public Button btnManutencao;
 
+
+    [Header("Sistema")]
+    public Animator animator;
     public GameObject compartimentoRefrigerantes;
-    public GameObject lataPrefab;
-    public Transform saidaRefrigerante;
+    public Transform localSpawn;
+    public GameObject prefabRefrigerante;
+    public List<GameObject> refrigerantesVisuais = new List<GameObject>();
 
-    public TextMeshProUGUI avisoTexto;
-
-    public int estoque = 2;
+    [Header("Estado")]
     public bool emManutencao = false;
     public bool temMoeda = false;
+    public int estoque = 0;
 
     void Start()
     {
-       // AtualizarInterface();
-
-        
-        btnInserir.onClick.AddListener(() =>
-        {
-            if (emManutencao)
-            {
-                estoque++;
-               // CriarLatinhaVisual();
-                animator.SetTrigger("abasteceu");
-             //   VerificarEstoque();
-            }
-            else if (!temMoeda && estoque > 0)
-            {
-                temMoeda = true;
-                animator.SetTrigger("inseriuMoeda");
-            }
-
-          //  AtualizarInterface();
-        });
-
-        btnCancelar.onClick.AddListener(() =>
-        {
-            if (temMoeda && !emManutencao)
-            {
-                temMoeda = false;
-                animator.SetBool("manutencaoAtivada", false);
-                animator.Play("SemMoeda");
-            }
-        });
-
-        btnComprar.onClick.AddListener(() =>
-        {
-            if (temMoeda && estoque > 0 && !emManutencao)
-            {
-                temMoeda = false;
-                estoque--;
-                animator.SetTrigger("despejar");
-
-                
-             //   AbrirCompartimento();
-
-             //   Invoke(nameof(SoltarLatinha), 1.5f);
-             //   VerificarEstoque();
-            }
-        });
-
-        btnManutencao.onClick.AddListener(() =>
-        {
-            emManutencao = !emManutencao;
-            animator.SetBool("manutencaoAtivada", emManutencao);
-            //AtualizarInterface();
-        });
+        estoque = 0;
+        AtualizarVisualEstoque();
+        VerificarEstoque();
+        animator.SetInteger("rerigerantes", estoque);
+        animator.SetBool("estoquezerado", true);
     }
-        public void AbrirCompartimento()
+
+    public void InserirMoeda()
     {
-        compartimentoAnimator.SetTrigger("Abrir");
+        if (emManutencao || estoque <= 0) return;
+
+        temMoeda = true;
+        animator.SetBool("TemMoeda", true);
+    }
+
+    public void Cancelar()
+    {
+        temMoeda = false;
+        animator.SetBool("TemMoeda", false);
+        avisoTexto.text = "CANCELADO";
+    }
+
+    public void Comprar()
+    {
+        if (temMoeda && estoque > 0)
+        {
+           estoque--;
+            AtualizarVisualEstoque();
+            temMoeda = false;
+            animator.SetBool("TemMoeda", false);
+            animator.SetTrigger("Vender");
+
+            animator.SetInteger("rerigerantes", estoque);
+            animator.SetBool("estoquezerado", estoque <= 0);
+
+
+        }
+        else if (estoque <= 0)
+        {
+            avisoTexto.text = "VAZIO";
+        }
+    }
+
+    public void AdicionarRefrigerante()
+    {
+        if (estoque >= 10) return; // limite opcional
+        estoque++;
+
+        GameObject lata = Instantiate(prefabRefrigerante, localSpawn.position, Quaternion.identity, localSpawn);
+        refrigerantesVisuais.Add(lata);
+
+        AtualizarVisualEstoque();
+
+        animator.SetInteger("rerigerantes", estoque);
+        animator.SetBool("estoquezerado", estoque <= 0);
+
+    }
+
+    public void AtualizarVisualEstoque()
+    {
+        // Destrói os visuais existentes
+        foreach (GameObject lata in refrigerantesVisuais)
+        {
+            Destroy(lata);
+        }
+        refrigerantesVisuais.Clear();
+
+        // Recria o estoque visual
+        for (int i = 0; i < estoque; i++)
+        {
+            GameObject lata = Instantiate(prefabRefrigerante, localSpawn.position + Vector3.right * i * 0.2f, Quaternion.identity, localSpawn);
+            refrigerantesVisuais.Add(lata);
+        }
+    }
+
+    public void VerificarEstoque()
+    {
+       animator.SetInteger("rerigerantes", estoque);
+        animator.SetBool("estoquezerado", estoque <= 0);
+
+    }
+
+    public void AbrirCompartimento()
+    {
+        compartimentoRefrigerantes.SetActive(true);
     }
 
     public void FecharCompartimento()
     {
-        compartimentoAnimator.SetTrigger("Fechar");
+        compartimentoRefrigerantes.SetActive(false);
     }
-    
-
+    public void AlternarManutencao()
+{
+    emManutencao = !emManutencao;
+    animator.SetBool("EmManutencao", emManutencao);
+}
 }
